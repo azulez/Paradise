@@ -644,12 +644,6 @@ GLOBAL_LIST_INIT(SpookyGhosts, list("ghost","shade","shade2","ghost-narsie","hor
 		return
 	camera_state(user)
 
-/obj/item/videocam/dropped()
-	. = ..()
-	if(!on)
-		return
-	//camera_state()  // Leave the camera on when it's dropped.
-
 /obj/item/videocam/examine(mob/user)
 	. = ..()
 	if(in_range(user, src))
