@@ -19,25 +19,6 @@
 	ammo_x_offset = 3
 	can_holster = TRUE  // Pistol size
 
-/obj/item/gun/energy/taser/suicide_act(mob/user)
-	if(can_shoot())
-		user.visible_message("<span class='suicide'>[user] is putting the electrodes of [src] to [user.p_their()] tongue.  It looks like [user.p_theyre()] trying to commit suicide!</span>")
-		sleep(25)
-		playsound(loc, fire_sound, 50, TRUE, -1)
-		var/obj/item/ammo_casing/energy/shot = ammo_type[select]
-		cell.use(shot.e_cost)
-		update_icon()
-		if(rand(1, 4) == 1)
-			user.visible_message("<span class='suicide'>[user] convulses on the floor for several seconds, but seems only dazed.</span>")
-			return SHAME
-		else
-			user.visible_message("<span class='suicide'>[user] has an acute, electrically induced heart attack!</span>")
-			return OXYLOSS
-	else
-		user.visible_message("<span class='suicide'>[user] dramatically licks the electrodes, but [src] is out of juice.</span>")
-		playsound(loc, 'sound/weapons/empty.ogg', 50, TRUE, -1)
-		return SHAME
-
 /obj/item/gun/energy/taser/examine_more(mob/user)
 	..()
 	. = list()
@@ -48,6 +29,25 @@
 	stimulating it and forcing the muscle into the contracted position, disabling movement."
 	. += ""
 	. += "Disablers have mostly replaced these weapons across known space, although the remain in certain specific niches where the immediate stopping power is desired."
+
+/obj/item/gun/energy/taser/suicide_act(mob/user)
+	if(can_shoot())
+		user.visible_message("<span class='suicide'>[user] is putting the electrodes of [src] to [user.p_their()] tongue.  It looks like [user.p_theyre()] trying to commit suicide!</span>")
+		sleep(25)
+		playsound(loc, fire_sound, 50, TRUE, -1)
+		var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+		cell.use(shot.e_cost)
+		update_icon()
+		if(rand(1, 4) == 1)
+			user.visible_message("<span class='suicide'>[user] has an acute, electrically induced heart attack!</span>")
+			return OXYLOSS
+		else
+			user.visible_message("<span class='suicide'>[user] convulses on the floor for several seconds, but seems only dazed.</span>")
+			return SHAME
+	else
+		user.visible_message("<span class='suicide'>[user] dramatically licks the electrodes, but [src] is out of juice.</span>")
+		playsound(loc, 'sound/weapons/empty.ogg', 50, TRUE, -1)
+		return SHAME
 
 //////////////////////////////
 // MARK: HYBRID TASER
@@ -73,23 +73,43 @@
 	as well as private individuals seeking a potent less-lethal self defence tool, mostly in the corporate world."
 
 /obj/item/gun/energy/gun/advtaser/suicide_act(mob/user)
-	if(can_shoot())
-		user.visible_message("<span class='suicide'>[user] is putting the electrodes of [src] to [user.p_their()] tongue.  It looks like [user.p_theyre()] trying to commit suicide!</span>")
-		sleep(25)
-		playsound(loc, fire_sound, 50, TRUE, -1)
-		var/obj/item/ammo_casing/energy/shot = ammo_type[select]
-		cell.use(shot.e_cost)
-		update_icon()
-		if(rand(1, 4) == 1)
-			user.visible_message("<span class='suicide'>[user] convulses on the floor for several seconds, but seems only dazed.</span>")
-			return SHAME
+	// TODO: This needs to be simplified. :|  Can we somehow just make calls to the other message routines?
+	if(select == 1)
+		if(can_shoot())
+			user.visible_message("<span class='suicide'>[user] is putting the electrodes of [src] to [user.p_their()] tongue.  It looks like [user.p_theyre()] trying to commit suicide!</span>")
+			sleep(25)
+			playsound(loc, fire_sound, 50, TRUE, -1)
+			var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+			cell.use(shot.e_cost)
+			update_icon()
+			if(rand(1, 4) == 1)
+				user.visible_message("<span class='suicide'>[user] has an acute, electrically induced heart attack!</span>")
+				return OXYLOSS
+			else
+				user.visible_message("<span class='suicide'>[user] convulses on the floor for several seconds, but seems only dazed.</span>")
+				return SHAME
 		else
-			user.visible_message("<span class='suicide'>[user] has an acute, electrically induced heart attack!</span>")
-			return OXYLOSS
+			user.visible_message("<span class='suicide'>[user] dramatically licks the electrodes, but [src] is out of juice.</span>")
+			playsound(loc, 'sound/weapons/empty.ogg', 50, TRUE, -1)
+			return SHAME
 	else
-		user.visible_message("<span class='suicide'>[user] dramatically licks the electrodes, but [src] is out of juice.</span>")
-		playsound(loc, 'sound/weapons/empty.ogg', 50, TRUE, -1)
-		return SHAME
+		if(can_shoot())
+			user.visible_message("<span class='suicide'>[user] is putting the barrel of [src] in [user.p_their()] mouth.  It looks like [user.p_theyre()] trying to commit suicide!</span>")
+			sleep(25)
+			if(user.is_holding(src))
+				user.visible_message("<span class='suicide'>[user] is only stunned by [src].  Perhaps this momentary episode was a cry for help?</span>")
+				playsound(loc, fire_sound, 50, TRUE, -1)
+				var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+				cell.use(shot.e_cost)
+				update_icon()
+				return SHAME
+			else
+				user.visible_message("<span class='suicide'>[user] panics and starts choking to death!</span>")
+				return OXYLOSS
+		else
+			user.visible_message("<span class='suicide'>[user] is pretending to blow [user.p_their()] brains out with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
+			playsound(loc, 'sound/weapons/empty.ogg', 50, TRUE, -1)
+			return SHAME
 
 /obj/item/gun/energy/gun/advtaser/cyborg
 	name = "mounted XD-2600 hybrid taser"
