@@ -265,7 +265,7 @@
 	else
 		user.visible_message("<span class='suicide'>[user] is pretending to blow [user.p_their()] brains out with [src]! It looks like [user.p_theyre()] trying to commit suicide!</b></span>")
 		playsound(loc, 'sound/weapons/empty.ogg', 50, TRUE, -1)
-		return OXYLOSS
+		return SHAME
 
 /obj/item/gun/energy/vv_edit_var(var_name, var_value)
 	switch(var_name)
