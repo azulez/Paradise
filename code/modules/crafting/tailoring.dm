@@ -75,6 +75,30 @@
 	category = CAT_CLOTHING
 	subcategory = CAT_CLOTHING_GENERAL
 
+/datum/crafting_recipe/hudpatchsec
+	name = "Security HUD eyepatch"
+	result = list(/obj/item/clothing/glasses/hud/security/eyepatch)
+	time = 2 SECONDS
+	tools = list(TOOL_SCREWDRIVER, TOOL_WIRECUTTER)
+	reqs = list(/obj/item/clothing/glasses/hud/security = 1,
+				/obj/item/clothing/glasses/eyepatch = 1,
+				/obj/item/stack/cable_coil = 5)
+	category = CAT_CLOTHING
+	subcategory = CAT_CLOTHING_GENERAL
+
+/datum/crafting_recipe/hudpatchsec/New()
+	..()
+	blacklist = subtypesof(/obj/item/clothing/glasses/hud/security)
+
+/datum/crafting_recipe/hudpatchsecremoval
+	name = "Security HUD removal (eyepatch)"
+	result = list(/obj/item/clothing/glasses/eyepatch, /obj/item/clothing/glasses/hud/security)
+	time = 2 SECONDS
+	tools = list(TOOL_SCREWDRIVER, TOOL_WIRECUTTER)
+	reqs = list(/obj/item/clothing/glasses/hud/security/eyepatch = 1)
+	category = CAT_CLOTHING
+	subcategory = CAT_CLOTHING_GENERAL
+
 /datum/crafting_recipe/hudgogsec
 	name = "Security HUD goggles"
 	result = list(/obj/item/clothing/glasses/hud/security/goggles)
